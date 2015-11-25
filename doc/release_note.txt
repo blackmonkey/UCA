@@ -1,0 +1,378 @@
+2012-7-9 19:57:35
+
+这个版本中我们完全集成了UCA lib 0.5版。以下是目前的实现进度概要：
+
+1.		【启动界面】：全部实现
+2.		【登录界面】：全部实现。用QuickDialog改造。
+2.1		【登录过程】：全部实现
+3.		【组织架构】：没有实现。优先实现其他模块。
+4.		【联系人】：多人会话、语音邮箱、群组模块没有实现，屏蔽了视频功能，其他功能都实现了。重新设计了Contact和Message数据表，用QuickDialog改造。
+5.		【拨号盘】：视频部分没有实现，其他功能都实现了。我们这边的测试结果是，桌面版的可以很顺利的拨通iOS版的，iOS版的很难拨通桌面版的。双方连通时，控制台不断有trace输出，但是听不到通话声音。一旦iOS版主动挂断，桌面版必须退出对话界面，重新开，才能再次拨通。
+6.		【我的信息】：重新设计了Account和ServerParam数据表，用QuickDialog改造。
+7.		【更多组件】：
+7.1		【帮助】：用QuickDialog构造。
+7.1.1	【寻求帮助】：添加了【关于UCA】的章节，其中可以查看build information，【关于UCA】的具体内容是从UCA桌面版的帮助文档中复制的。其他的帮助信息都比较简单，因为时间关系，没有细化。
+7.1.2	【寻求技术帮助】：该章节内容直接从UCA桌面版的帮助文档中复制。
+7.1.3	【视频演示】：该章节无内容
+7.2		【设置】：用QuickDialog构造。
+7.2.1	【用户设置】：没有做，因为其内容已经显示于【登录】界面和【我的信息】界面了
+7.2.2	【系统设置】：因时间关系，只做了部分功能。没有做【呼叫设置】和【高级设置】。【音频设置】里没有做话筒音量增益设置和音频编码设置。【视频设置】里没有做视频格式设置（还不知道相关的UCA lib接口）。
+7.2.3	【安全设置】：全部完成
+7.3		【用户切换】：全部完成
+8		【IM聊天】：从【联系人】进入，点击某个联系人的条目则进入IM聊天界面，目前可以正常收发纯文本消息。表情输入做了接口，还没有完善详细图片-文本对照表。在IM聊天界面没有打开的情况下，UCA lib收到的IM消息还没有存到数据表Message里，因此，也没做未读消息提醒。
+
+2012-7-24 13:23:06
+Done
+1.	集成了UCA lib 0.7.7版；
+2.	实现了【组织架构】模块，按部门ID检索、搜索联系人、添加联系人等功能能正常运行；
+3.	修正了以下Bug：
+	#25  我的信息中，当SIP Server服务器上账号的权限（发送文件大小、文件传输速率）这两个地方为空时，其实际默认值为1M，而IOS中我的信息页面却读取为0
+	#53  好友界面显示多余的横条英文首字母
+	#79  组织架构只有界面，没有功能
+	#89  “我的信息”界面显示名称为更改为“我的资料”更准确，用户更易懂
+	#96  在我的信息栏里面的“电话”栏里面，“其它号码”出现错别字，应为“其他号码”
+	#106 联系人好友界面，没有实现通过搜索结果添好友功能
+	#109 添加已经是好友的联系人时，提示“该联系人已添加，请选择其他联系人”
+4.	关闭宏DEBUG，从而关闭宏UcaLog，以验证“等待半小时左右，应用异常退出”的问题。
+
+Know Issue
+1. 切换不同部门时，组织架构的tab item的title没有固定为“组织架构”，会变化，tab item的icon也会消失。
+2. 切换不同部门时，有时列表没有显示进度条。
+3. 从组织架构添加联系人时，部门列表项不该选择，但左边的选择框会在选中和不选的状态间快速切换一下，用户体验不是很好。
+4. 受限于测试帐号，没有测试某级部门下只有子部门的情况，如标题栏按钮、添加联系人等。
+5. 从组织架构添加联系人，大多数情况下失败，还没有调查具体原因。
+
+Todo
+下一次Release将集中修正【最近联系人】模块中的Bug，预计2012年7月26日发布
+
+2012-7-25 11:14:45
+Done
+1.	重新实现了【组织架构】模块的数据结构部分，目前按部门ID检索、搜索联系人、添加联系人等功能能正常运行；
+2.	修正了以下Bug：
+	1) 切换不同部门时，组织架构的tab item的title没有固定为“组织架构”，会变化，tab item的icon也会消失。
+	2) 切换不同部门时，有时列表没有显示进度条。
+	3) 从组织架构添加联系人，大多数情况下失败，还没有调查具体原因。
+	#44  选择需要删除的好友，提交删除后，界面卡住几分钟后UCA程序core dump
+	#45  删除好友成员失败
+	#58	 语音呼叫拨出号码后的界面文字提示不正确
+	#110 使用UCA的不一定全是iPhone用户，也有可能是iPod或iPad用户，因此提示“从手机通讯录添加好友”是不准确的，应该提示“从通讯录添加好友”。
+
+Todo
+下一次Release将集中修正【最近联系人】模块中的Bug，预计2012年7月26日发布
+
+2012-7-28 8:49:10
+完成任务：
+1.	根据Ucaiphone视觉原型120713，重新设计了组织架构和联系人的列表项。
+2.	关闭音视频通话模块，7月底上架版本将不包含这两部分功能。
+3.	[组织架构]在搜索界面增加“添加联系人”功能
+
+已修正问题：
+1.	[组织架构]搜索总是显示“无结果”
+2.	从组织架构添加联系人时，部门列表项不该选择，但左边的选择框会在选中和不选的状态间快速切换一下，用户体验不是很好。
+3.	受限于测试帐号，没有测试某级部门下只有子部门的情况，如标题栏按钮、添加联系人等。
+	解决办法：通过搜索来测试（搜索结果只有部门）。
+4.	UILabel.fontSize = UILabel.frame.size.height - 4
+5.	搜索组织架构时，进度条位置不对。
+6.	[最近联系人]总是没有显示列表项
+#66	切换用户时，删除备选用户，无提示。
+#75	IM聊天记录中没有显示自己的账号信息
+
+已知问题：
+1.	[组织架构]显示顶级部门时，刷新按钮没有显示
+2.	联系人的在线信息在UcaContactService启动前就收到了，以致好友状态更新不对。
+3.	[组织架构]点击搜索到的部门A，以查看其子部门信息时，即使最初的OrgViewController，即最底层的OrgViewController，
+	已经获取了部门A的子部门信息，该子部门信息还是会被重新获取一遍。这是没必要的，需要优化。
+4.	[组织架构]第一次显示时，能成功从服务器获取信息，但有时候没有显示出来，几率50%。
+
+计划任务：
+1.	根据Ucaiphone视觉原型120713，重新设计联系人详细信息和帐号详细信息界面
+2.	联系人列表静置一段时间后，应用crash
+	原因：收到联系人presentation更新后，抛出异常
+			UCA[1552:11903] *** Terminating app due to uncaught exception 'NSInternalInconsistencyException',
+			reason: 'UITableView dataSource must return a cell from tableView:cellForRowAtIndexPath:'
+3.	解决TRAC上的BUG
+
+2012-7-31 8:24:36
+已知问题：
+1.	从服务器同步而得的帐号、联系人信息中的firstName、lastName解析正常，但没有保存到数据库中。头像数据也没有保存到数据库中。
+
+已修正问题：
+#12	PC机与Ipad之间通过UCA通过即时消息进行通信时，如果第一次由pc机向ipad发起，则ipad不能收到来自pc的即时消息
+#13	有新的即时消息到来时，在联系人和最近联系人上会呈现提示状态，没有实现
+#14	IM聊天界面没有打开的情况下，不能收到即时聊天消息
+#16	不能收到未知联系人的IM聊天信息
+#74	在iPad中与单个联系人进行IM聊天中的显示的时间和iPad系统的时间不一致
+#84	用户登录时，输入密码错误两次后，程序core dump
+#106	联系人好友界面，没有实现通过搜索结果添好友功能
+#114	在“联系人”页面，点击右上角的按钮，选择“添加好友成员”，继续选择“从通讯录添加好友”，然后选择其中的一个好友，在后在联系人页面，点击该联系人的头像，出现个人资料页面，点击头像，选择本地的一张图片上传，点击Done，程序会挂
+#124	组织架构中的非好友联系人向登陆用户发送IM后，进入组织架构中查找到该联系人，但是点击该联系人的头像或IM图标、呼叫图标等都没有反应。
+#131	用户非首次登陆系统，且有最近联系人的情况下，再此登陆系统，登陆后不是直接进入到最近联系人界面
+#137	组织架构发起IM会话，会话记录错误
+#154	登录后修改密码时，旧密码默认保存了，直接输入“新密码”和“新密码确认”就可修改密码，这样不安全。
+#161	非空白系统且已有最近联系人记录的情况下，用户登录系统后是没有自动跳转到最近联系人界面，而跳到组织架构的根界面
+#162	在最近联系人界面，每收到一条好友发的信息，最近联系人界面就增加一条该好友
+#163	在联系人好友界面，每收到一条好友发的信息，好友界面就增加一条该好友
+#164	在最近联系人界面，每收到一条系统联系人发的信息，最近联系人界面就增加一条该联系人
+#165	在联系人好友界面，每收到一条非好友的联系人的信息，好友界面就增加一条该联系人的信息
+#167	未读IM信息数量均显示1 且打开IM窗口不显示这些未读信息
+#168	从组织架构选择联系人发送消息，最近联系人界面，该联系人不显示姓名，信息为空白联系人
+#171	在最近联系人界面，点击从组织架构发起消息，点击的IM图标，不能进行IM聊天
+#175	登录账号song,在联系人页面跟账号为204的发送10条消息。账户为204的联系人中出现10个song（重复出现），最近联系人里面也出现10个song（重复出现）
+#179	在聊天窗口，不能正确显示消息发送时间
+#185	进入组织框架页面，进入“迈普股份”、“研究院”，点击研究院下的联系人，不能进行即时聊天
+
+无法重现
+#117	进入组织架构页面，选择一个联系人，发送9条即时消息，每条内容依次为：1,2,3,4,5,6,7,8，9.，9、当输入第九条时候，对话框不能正常显示输入的内容9
+#178	在进行IM聊天时，应该可以选中，拷贝，粘贴输入框的内容
+#180	当发送消息较多时，查看聊天记录不方便，且不能查看20条之前的聊天记录
+
+暂缓/非100%重现
+#151	离线登录之后，在我的资料页面将状态更改为在线，将页面切换到联系人页面，选择某一联系人点击，系统提示“您目前处于离线状态，无法发送即时消息。请登录后再重试。”且不能查看聊天记录。
+
+2012-8-4 7:29:32
+已修正问题：
+1.	完善了“记住密码”的功能
+2.	从服务器同步而得的帐号、联系人信息中的firstName、lastName解析正常，但没有保存到数据库中。头像数据也没有保存到数据库中。
+3.	帐号的数据库信息没有正确更新。
+#5		登陆账号不保存密码的情况下，登陆退出后，再次选择该账号进行登陆，系统没有给出要求输入密码的提示，而是界面一直处于登陆加载状态
+#159	选择不记住密码登录后，在选择该帐号第二次登录时登录成功
+
+2012-8-15 16:10:07
+已修正问题：
+#8		输入的登陆账号必填信息有误的情况下，进行登陆，在弹出的错误提示信息中单击返回登陆界面时，在登陆界面该错误提示又弹了出来
+#9		账号登陆失败，弹出的登陆失败提示信息，需点击多次才能关闭
+#29		一个已经登陆的账号，进行切换账号操作时，仍然选择切换前的账号进行再次登陆，出现登陆一直处于loading的状态
+#134	以用户A成功登录后，选择切换到B用户时，程序一直停在B用户的登录动画界面
+#243	某账号第一次登录不成功时，在登录界面不应该保存该账号信息
+
+需确认的问题：
+#133	以用户A成功登录后，再选择切换到帐号A，程序一直停在A用户的登录动画界面
+
+2012-8-17 09:15:41
+已修正问题：
+#135	用户成功登录，修改密码后 ，登录失败
+#229	登录账号song（起初密码为888888），进入设置下的安全设置，输入旧密码eeeeee,和新密码以及新密码确认llllll。修改密码成功。
+#231	登录账号song（起初密码为888888），进入设置下的安全设置，输入旧密码eeeeee,和新密码以及新密码确认llllll。修改密码成功。然后以密码llllll或者888888登录都不成功。然后通过sipserver修改密码为222222，PC版能够登录，ipod上不能登录
+#242	登录song,进入设置，修改密码，然后返回至设置，再次进入修改密码，修改密码提示旧密码输入错误。
+
+2012-8-27 8:43:44
+完成任务：
+1.	根据切图资源(0814)改造了启动界面，IM聊天界面，UINavigationController，UITabBarController；
+2.	整合了Ucalib v0.8.2，并完善了图片、表情收发；
+3.	删除了无用类QMultilineElement，QMultilineTextViewController，QSortingSection及无用的图片资源。
+4.	桌面版发送的图片标签的src属性为Windows XP系统的本地路径，如"C:\Documents and Settings\user\Application Data\UCA\Snap\020560003827263.png"，
+	iPhone端会简化该属性，如简化为"020560003827263.png"。
+
+已修正问题：
+#15		不能正确显示发送的表情消息
+#31		进行账号切换前，没有给用户提示信息
+#76		从桌面PC端向iPad端发送即时消息，因输入太长，采取在信息中间使用Backspace键删除部分内容后发送，iPad端接收到的信息中显示有非法字符，且出现core dump
+#78		即时聊天窗口，没有显示自己和对方的头像
+#112	关闭IM窗口后，重新打开关闭的IM窗口，聊天记录里对方的个人信息显示为（null）.
+#177	没有发送表情的功能
+#217	改变输入法后，再输入信息发送，发送条变到屏幕中央
+#218	输入中文时，看不到拼音，不便于用户修改输入信息
+#226	不能够复制聊天记录中的消息文字
+
+2012-8-28 9:23:02
+完成任务：
+1.	补充了iPad的图标资源。
+
+已修正问题：
+#236	IM时，由iPad向桌面UCA发送小于号<， 桌面收到的消息为空
+#237	IM时，由桌面UCA向 iPad发送符号， iPad收到的字符有转意字符
+#267	无好友联系人的UCA用户登录后，在联系人界面上没有进行添加好友等操作的按钮
+1.	联系人界面只有一个好友时，没有添加好友的按钮，无法添加好友
+2.	UCA图片资源没有正常显示。
+
+2012-8-30 9:28:14
+完成任务：
+1.	整合固定群组成员管理界面
+
+已修正问题：
+1.	找到了应用放置一段时间或操作一段时间后crash的原因之一，并做了修正，这一版应该要稳定些。
+
+2012-9-4 10:40:14
+完成任务：
+1.	集成了UCA lib 0.8.8版；
+2.	“固定群组”整合了IM聊天功能、从组织架构添加联系人；
+3.	整合了“多人会话”；
+4.	整合了视频通话模块；
+5.	调整了Message数据表结构，以记录“固定群组”和“多人会话”的IM信息；
+6.	打开了宏ENABLE_DECODE_ENCODE_AVATAR，以方便测试头像的BASE64编解码；
+
+已修正问题：
+#51		在好友列表中，好友中文名字，姓在后，名在前
+#303	向固定群组发送即时消息的功能没有实现
+#304	固定群组相关资料界面上的最近通讯功能没有实现
+
+已知问题
+1.	快速收发IM会crash，这是由于SQLite互斥锁造成的。
+2.	添加多人会话成员时，CBK_ChatStatus没有返回UCALIB_CHAT_REFER_SUCCEED或UCALIB_CHAT_REFER_FAILED。
+
+2012-9-7 10:07:51
+完成任务：
+1.	修改了拨号盘界面
+
+已知问题
+1.	缺少耳机和免提之间切换的接口
+
+2012-9-11 16:05:37
+完成任务：
+1.	重构视频、语音通话UI
+2.	整合UCA lib 0.8.10版
+3.	删除无用图片资源
+
+已知问题：
+1.	PC端语音呼叫iOS端，iOS端接受后，PC端挂断，console能看到下面的trace不断输出，似乎没有实际挂断：
+	2012-09-11 15:04:15.977 UCA[272:1ae03] AUIOHelper::AudioInputProc: we have 93 fr, client wants 92 fr
+	2012-09-11 15:04:16.024 UCA[272:1ae03] AUIOHelper::AudioInputProc: we have 92 fr, client wants 93 fr
+	2012-09-11 15:04:16.071 UCA[272:1ae03] AUIOHelper::AudioInputProc: we have 93 fr, client wants 92 fr
+2.	PC端呼叫iOS端，UCALIB_CALLSTATUS_INCOMING_RECEIVED状态的param为无效字符串：
+	语音呼叫的param为'><'
+	视频呼叫的param为'sipserver.test.com'
+3.	iOS端呼叫PC端，PC端拒绝，iOS端没有收到UCALIB_CALLSTATUS_CANCELBYPEER状态
+4.	iOS端呼叫PC端，PC端接通后，挂断，iOS端没有收到UCALIB_CALLSTATUS_HANGUPBYPEER状态
+5.	iOS端与PC端通话，iOS端收不到UCALIB_CALLSTATUS_PAUSEBYPEER和UCALIB_CALLSTATUS_RESUMEBYPEER状态
+6.	console的trace中发现以下error：
+	ortp-warning-/Users/wangzj/ucalib/submodules/build/..//../liblinphone-sdk/i386-apple-darwin/share/sounds/linphone/rings/oldphone.wav does not exist
+	ortp-warning-Failed to open /Users/wangzj/ucalib/submodules/build/..//../liblinphone-sdk/i386-apple-darwin/share/sounds/linphone/ringback.wav
+	ortp-warning-Failed to open /Users/wangzj/ucalib/submodules/build/..//../liblinphone-sdk/i386-apple-darwin/share/sounds/linphone/ringback.wav
+7.	需要迈普修正以下图片资源：
+	phonecall_audio_logo.png                语音拨出时显示的logo
+	phonecall_audio_logo@2x.png             语音拨出时显示的logo
+	phonecall_incoming_audio_logo.png       语音来电时显示的logo
+	phonecall_incoming_audio_logo@2x.png    语音来电时显示的logo
+
+已修正问题：
+#39		通过点击联系人信息上的电话图标进入语音呼叫页面，该页面上的取消呼叫功能无效
+#40		通过在拨号盘上输入电话的前几位，搜索出符合条件的联系人，选择一个联系人后，单击拨号盘上的语音呼叫按钮，UCA程序core dump
+#43		通过点击联系人信息上的电话图标进入语音呼叫页面，点击该页面上的“取消呼叫”按钮，界面出现黑屏
+#55 	拨号盘只能输入数字，无法输入英文
+#57 	拨号盘的数字键盘上没有显示可用于快速查找用户的英文
+#70 	拨号盘上没有显示视频和隐藏按钮
+#71 	在语音通话连接状态下，界面显示和交互原型不一致
+#73 	从iPad/iPhone端通过直接在拨号盘上输入联系人的软终端号码向桌面PC端，发起呼叫，呼叫失败
+#122 	用户停留在组织架构页面时，有语音呼叫进入，接受该语音呼叫，通话完成后挂断电话， UCA程序出现异常退出
+#152 	登录某一账号进入联系人页面，拨打联系人song,然后切换到联系人页面拨打另一联系人205，能够进行第二次呼叫，且无提示
+#156 	登录204账号之后，进入拨号盘页面，拨打205，点击“挂断”按钮
+#157 	登录204账号之后，进入拨号盘页面，拨打205，将屏幕切换为横屏，呼叫画面不能够完整显示
+#158 	进入登录界面，选择204账号，选择修改“更改登录信息”，将“是否记住密码”设置为否，退出程序，再次进入204账号的“更改登录信息”界面，“是否记住密码”仍是记住密码状态
+#274 	在IPad上，UCA的所有界面黑色太深，其他颜色的事项全被覆盖了.导致在IPad上不能进行测试
+#289 	好友拨入电话时，显示的是该好友的软终端号
+#307 	群组管理员，不能从组织架构中添加群成员
+#308 	群组管理员，不能从最近联系人中添加群成员
+#321 	登录某一账号进入联系人页面，拨打联系人song,然后切换到联系人页面拨打另一联系人205，能够进行第二次呼叫，且无提示
+#322 	需求不明确，根据需求图，拨号盘的“隐藏键盘”左边为视频呼叫按钮，右边为语音呼叫按钮。
+#324 	点击拨号盘，输入号码1828，点击搜索出来的联系人（软终端号为1828），然后点击拨打按钮。程序会异常退出。
+#325 	在联系人中，点击某好友进行视频呼叫，实际进入的是IM消息。
+#326 	当有电话呼入时，直接进入接听状态，但是实际并没有接听。屏幕显示的只有挂断状态。
+#327 	拨打某一用户，被叫不接。主叫挂断之后，被叫依然还会振铃。
+#329 	打开拨号盘，拨号盘只显示部分，影响拨号和删除已拨号码。
+#333 	当有视频呼叫呼入时，被叫不能选择“关闭摄像头并接听”选项进行音频接听。
+#336 	进入视频通话之后，不能切换出来进行其他操作
+
+2012-9-14 9:00:59
+完成任务：
+1.	整合UCA lib 0.8.11版：调整视频通话模块
+2.	替换迈普提供的图片资源，添加应用图标、启动背景
+
+已修正问题：
+1.	视频来电时，显示语音来电界面和语音通话界面。
+2.	应用UCA lib接口ucalib_set_network_reachable和ucalib_is_network_reachabled。
+#56		当服务器不通时，用户登录失败的提示只是用户登录失败，没有说明是由于服务器原因导致的登录失败
+#65		在通话过程中，修改状态为离线模式或切换到其他账号，该语音通话仍然没有挂断。
+#153	登录204账号，在拨号盘页面拨打自己的号码（204）
+#199	Wifi和3G网络同时打开时，进行IM聊天，过一会儿，账号会强迫下线，提示用户在其他地方登陆
+#225	3G和wifi同时存在时，wifi用户登录正常，3G用户提示登录失败
+#287	ios平台上选择表情图标时，聚焦不敏感，以致不容易选中表情图标
+
+已知问题：
+1.	numpad_7.png 的字母应该是“7 pqrs”，而不是“7 pqts”。
+
+2012-9-17 8:56:41
+已修正问题：
+#108	在联系人的好友界面不做任何操作，等待一段时间（大概20分钟），屏幕下方的组织架构、联系人、我的信息、更多组件图片全部消失，无法切换到其它页面
+#166	在最近联系人界面，无法删除最近联系人；
+#254	在最近联系人界面，不能同时选择多个最近联系人进行删除；
+#340	有电话呼入时，在被叫端没有区分语音呼叫和视频呼叫，被叫端显示的图像都是“视频呼叫”，文字提示的都是“语音呼叫”。
+
+2012-9-17 20:39:33
+已修正问题：
+1.	NSMakeCollectable定义找不到
+
+2012-9-21 8:26:45
+完成任务：
+1.	“关于UCA”中添加Build Version。
+2.	调整startNetworkListener的调用时间。
+
+2012-10-23 9:04:00
+完成任务：
+1.	引入FMDB以解决数据库访问导致的core dump问题
+2.	整合UCA lib 0.8.12版
+3.	增加文档“数据库设计.xlsx”
+4.	调整数据库结构，增加了对以下案例的处理：
+	1		帐号(account)登录，获取好友和私有联系人，相关实例为contact，以（contact.userId, contact.contactType）在数据表Contact中检索
+	1.1		若contact存在于数据表Contact中，更新基本信息，不更新userId，contactType，presentation，cameraOn和voicemailOn这五栏，同时
+	1.1.1	若(account.id,contact.id)存在于数据表AccountContacts中，相关记录为recAccountContact
+	1.1.1.1	若contact.contactType不等于recAccountContact.contactType，设置recAccountContact.contactType=contact.contactType，不改变recAccountContact.lastAccessed
+	1.1.1.2	若contact.contactType等于recAccountContact.contactType，不做任何处理
+	1.1.2	若(account.id,contact.id)不存在于数据表AccountContacts中，在数据表AccountContacts中添加记录（不设置lastAccessed这栏）
+	1.2		若contact不存在于数据表Contact中：在数据表Contact中添加记录（不设置presentation，cameraOn和voicemailOn这三栏），并在数据表AccountContacts中添加记录（不设置lastAccessed栏）
+	1.3		对于在于数据表AccountContacts中的(account.id,contact.id)，但服务器中没有相应的contact：
+	1.3.1	若recAccountContact.lastAccessed为0，则删除recAccountContact
+	1.3.1	若recAccountContact.lastAccessed不为0，则设置recAccountContact.contactType = ContactType_Unknown
+	2		获取到组织架构/固定群组/多人会话联系人时，相关实例为contact
+	2.1		若contact存在于数据表Contact中，更新基本信息，不更新userId，contactType，presentation，cameraOn和voicemailOn这五栏；
+	2.2		若contact不存在于数据表Contact中：在数据表Contact中添加记录（不设置presentation，cameraOn和voicemailOn这三栏）。
+	6		收到好友、私有联系人、固定群组/多人会话成员在线状态变化时，有userId，以（userId, ContactType_Unknown）在数据表Contact中检索
+	6.1		若contact存在于数据表Contact中，更新数据记录的presentation、cameraOn和voicemailOn这三栏
+	6.2		若contact不存在于数据表Contact中，根据userId构建sipphone，再根据sipphone向服务器查询contact信息，在数据表Contact中添加记录，同时设置presentation、cameraOn和voicemailOn这三栏，contactType = ContactType_Unknown
+	9		从固定群组、多人会话、组织架构添加好友，列表中的联系人在数据表Contact中都有记录，以（curAccountId，contact.id，且contactType != ContactType_Group）在数据表AccountContacts中检索，
+	9.1		若recAccountContact存在，
+	9.1.1	若recAccountContact.contactType == ContactType_Friend，提示“该用户已经是你的好友！”
+	9.1.2	若recAccountContact.contactType != ContactType_Friend，更新recAccountContact.contactType = ContactType_Friend
+	9.2		若recAccountContact不存在，添加记录（curAccountId，contact.id，contactType = ContactType_Friend）
+	10		从最近联系人添加好友，（curAccountId，contact.id）必然存在于数据表AccountContacts中，只需将设置contactType = ContactType_Friend即可。
+	11		从地址簿添加好友，需要以（userId，contactType=ContactType_AddressBook）在数据表Contact中检索，
+	11.1	若contact存在，提示“该联系人已经是你的好友！”
+	11.2	若contact不存在，在数据表Contact中添加记录（不设置presentation，cameraOn和voicemailOn这三栏），并在数据表AccountContacts中添加记录（不设置lastAccessed栏）。
+	12		自己输入添加私有联系人，先向服务器提交数据，成功后，再在数据表Contact中添加记录（不设置presentation，cameraOn和voicemailOn这三栏），并在数据表AccountContacts中添加记录（不设置lastAccessed栏）。
+
+2012-12-11 11:14:56
+完成任务：
+1.	调整数据库结构，增加了对以下案例的处理：
+	3		收到IM时，有sipphone
+	3.1		若sipphone以img-开头，为固定群组消息，以sipphone在数据表Group中检索，
+	3.1.1	若group存在于数据表Group中，
+	3.1.1.1	若(account.id,group.id)存在于数据表AccountContacts中，更新相关记录的lastAccessed栏
+	3.1.1.2	若(account.id,group.id)不存在于数据表AccountContacts中，在数据表AccountContacts中添加记录（contactType=ContactType_Group, lastAccessed=?）
+	3.1.2	若group不存在于数据表Group中，在数据表Group中添加记录，并在数据表AccountContacts中添加记录（contactType=ContactType_Group, lastAccessed=?）
+	3.2		若sipphone以imc-开头，为多人会话消息，以（sipphone, ContactType_Session）在数据表Contact中检索
+	3.2.1	若contact存在于数据表Contact中，
+	3.2.1.1	若(account.id,contact.id)存在于数据表AccountContacts中，更新相关记录的lastAccessed栏
+	3.2.1.2	若(account.id,contact.id)不存在于数据表AccountContacts中，在数据表AccountContacts中添加记录（contactType=ContactType_Session, lastAccessed=?）
+	3.2.2	若contact不存在于数据表Contact中，在数据表Contact中添加记录（contactType = ContactType_Session，sipPhone = contact.sipPhone），并在数据表AccountContacts中添加记录（contactType = ContactType_Session，lastAccessed=?）
+	3.3		若sipphone不以img-、imc-开头，为普通消息，执行案例4步骤
+	4		收到来电时、拨出电话时，有sipphone，以（sipphone, ContactType_Unknown）在数据表Contact中检索
+	4.1		若contact存在于数据表Contact中，
+	4.1.1	若(account.id,contact.id)存在于数据表AccountContacts中，更新相关记录的lastAccessed栏
+	4.1.2	若(account.id,contact.id)不存在于数据表AccountContacts中，在数据表AccountContacts中添加记录（contactType=ContactType_Unknown, lastAccessed=?）
+	4.2		若contact不存在于数据表Contact中，根据sipphone向服务器查询contact信息，在数据表Contact中添加记录（不设置presentation、cameraOn和voicemailOn这三栏，contactType = ContactType_Unknown），并在数据表AccountContacts中添加记录（contactType = ContactType_Unknown，lastAccessed=?）
+	5		收到固定群组/多人会话成员变化时，有sipphone，对于被加入和在组中的成员，以（sipphone, ContactType_Unknown）在数据表Contact中检索
+	5.1		若contact存在于数据表Contact中，不做任何处理
+	5.2		若contact不存在于数据表Contact中，根据sipphone向服务器查询contact信息，在数据表Contact中添加记录（不设置presentation、cameraOn和voicemailOn这三栏，contactType = ContactType_Unknown）
+	5.3		对于删除的成员，固定群组的，则在数据表GroupContacts中删除相关记录；多人会话的，在Session实例的联系人Array中删除相关contact实例。
+	7		收到加入多人会话的邀请时，有sipphone，执行案例“3 2)”的步骤
+	8		收到文件传输时，有sipphone，执行案例4步骤
+2.	修改UcaCallingService以添加通话记录。
+3.	修改以上相关代码。
+
+2012-12-14 13:48:00
+修正以下问题：
+1.	群组和会话的sip phone显示为img-xxx@(null)
+2.	帐号的别名和群组信息显示为"(\n\n)"
+3.	服务器端有群组信息，iOS端的群组列表总为空
+4.	帐号登录前，在服务器端管理群组，踢出某成员；帐号登录后，群组列表里还能看到该成员
+5.	拨出的电话显示为“已拨来电/视频”：改为“拨出电话/视频”
+6.	帐号的头像在数据库里记录为"<UIImage @xxxxxxxx>"

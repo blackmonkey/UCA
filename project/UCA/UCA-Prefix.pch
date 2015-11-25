@@ -1,0 +1,55 @@
+/**
+ * Copyright (C) 2012, Bohao Technology Ltd. All rights reserved.
+ * Copyright (C) 2012, Maipu Communication Technology Co., Ltd. All rights reserved
+ */
+
+/**
+ * Prefix header for all source files of the 'UCA' target in the 'UCA' project
+ */
+
+#import <Availability.h>
+
+#ifndef __IPHONE_4_0
+#warning "This project uses features only available in iOS SDK 4.0 and later."
+#endif
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+    #import <UIKit/UIKit.h>
+    #import "ucalib.h"
+    #import "UcaConfig.h"
+    #import "UIColor+Utils.h"
+    #import "QuickDialog.h"
+    #import "FMDatabase.h"
+    #import "AvatarElement.h"
+    #import "UcaConstants.h"
+    #import "NSString+Utils.h"
+    #import "NotifyUtils.h"
+    #import "ScreenUtils.h"
+    #import "UIImage+Utils.h"
+    #import "UIButton+Utils.h"
+    #import "Group.h"
+    #import "Session.h"
+    #import "XmlUtils.h"
+    #import "ServerParam.h"
+    #import "Privilege.h"
+    #import "RecentLog.h"
+    #import "Department.h"
+    #import "Person.h"
+    #import "Account.h"
+    #import "Contact.h"
+    #import "Message.h"
+    #import "UcaService.h"
+    #import "UcaDatabaseService.h"
+    #import "UcaGroupService.h"
+    #import "UcaSessionService.h"
+    #import "UcaCallingService.h"
+    #import "UcaAccountService.h"
+    #import "UcaConfigurationService.h"
+    #import "UcaContactService.h"
+    #import "UcaRecentService.h"
+    #import "UcaServerParamService.h"
+    #import "UcaMessageService.h"
+    #import "UcaOrgService.h"
+    #import "UcaAppDelegate.h"
+#endif

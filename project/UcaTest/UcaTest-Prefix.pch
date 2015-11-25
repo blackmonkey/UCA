@@ -1,0 +1,33 @@
+//
+// Prefix header for all source files of the 'UcaTest' target in the 'UcaTest' project
+//
+
+#ifdef __OBJC__
+    #define UCA_TEST_TARGET
+    #define TEST_ACCOUNT_ID (10)
+
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+    #import "ucalib.h"
+    #import "UcaConfig.h"
+    #import "QuickDialog.h"
+    #import "AvatarElement.h"
+    #import "UcaConstants.h"
+    #import "NSString+Utils.h"
+    #import "NotifyUtils.h"
+    #import "ScreenUtils.h"
+    #import "XmlUtils.h"
+    #import "ServerParam.h"
+    #import "Privilege.h"
+    #import "Person.h"
+    #import "Account.h"
+    #import "Contact.h"
+    #import "Message.h"
+    #import "UcaAccountService.h"
+    #import "UcaConfigurationService.h"
+    #import "UcaContactService.h"
+    #import "UcaDatabaseService.h"
+    #import "UcaServerParamService.h"
+    #import "UcaMessageService.h"
+    #import "UcaAppDelegate.h"
+#endif
